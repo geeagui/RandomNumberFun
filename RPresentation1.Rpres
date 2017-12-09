@@ -1,0 +1,94 @@
+Developing Data Products
+========================================================
+author: geeagui
+date: Thursday 12/7/2017
+autosize: true
+transition: linear
+transition-speed: slow
+font-family: 'monospace'
+css: myCustomSlides.css
+ 
+
+Your Shiny Application
+========================================================
+
+<br><br><font size="5">
+Write a shiny application with associated supporting documentation. The documentation should be thought of as whatever a user will need to get started using your application.
+
+- Deploy the application on Rstudio's shiny server
+- Share the application link 
+- Share your server.R and ui.R code on github
+
+***
+<strong>The application must include the following:</strong>
+
+- Some form of input (widget: textbox, radio button, checkbox, ...)
+- Some operation on the ui input in sever.R
+- Some reactive output displayed as a result of server calculations
+- You must also include enough documentation so that a novice user could use your application.
+- The documentation should be at the Shiny website itself. Do not post to an external link.
+</font>
+
+The Shiny Application
+========================================================
+![ScreenShot1](RPresentation1-figure/RandomNumberFunScreenShot1.PNG)
+![ScreenShot2](RPresentation1-figure/RandomNumberFunScreenShot2.PNG)
+***
+<h4>Random Number Fun</h4> 
+<em><a target="_blank" href="https://geeagui.shinyapps.io/RandomNumberFun">Click here for link to App</a></em>
+
+<span style="text-decoration: underline;">Instructions:</span><br>
+<font size="4">
+Increase/decrease <b>input value</b> and see if shows up as the tracer. <b>Random values</b> are from 1 to 1000, pick any one and move the slider back and forth. <b>Minimum and maximum</b> values for <b>X and Y</b> will shrink the window in which data is displayed. Unselecting <b>Replacement</b> will reduce the data values plotted on the chart. Select <b>Bins</b> value, only affects Distribution Charts, to increase/decrease the number of horizontal slices for data visualization.
+</font>
+
+Your Reproducible Pitch Presentation
+========================================================
+<font size="4.5">Now it is time to make the pitch. Use 5 slides (inclusive of the title slide) to pitch the app. Create a web page using Rstudio Presenter with an html5 slide deck.
+
+We go through great effort to come up with reproducible data and algorithms. Since we cannot recreate survey, collected, or other forms of data (cost, lost opportunity, et al.), we reproduce it.   
+- First pose the thesis statement or question that we would like to answer 
+- Set aside an original copy of the raw data 
+- Document the raw data (Readme), where it cames from and what it represents
+- Document the changes to the raw data as we transform it into (tidy) a format more readily usable by the R Language
+- Perform exploratory data analysis to determine which direction(s) to take it from there
+- Perform analyses, draw inferences, create or train models
+- Validate the process so far. Perhaps go back to a previous step or take a different turn
+- Present (slides, markdown docs, et al.) and share (shiny.io, GitHub, et al.) the results in a reproducible fashion
+</font>
+
+Pitching Reproducible Research
+========================================================
+<em><a target="_blank" href="https://github.com/geeagui/RandomNumberFun">All code can be retrieved at this link</a></em><br> 
+A snippet of code used to create the App... 
+```{r ui.R }
+# ui Random Number Fun
+library(shiny)
+# Define UI for application that draws random numbers
+shinyUI(fluidPage(
+  # Application title
+  titlePanel("Plot Random Numbers and Trace a Value - A Visualization Tool"),
+  # Sidebar with a slider input for values
+  sidebarLayout(
+    sidebarPanel(
+      numericInput("tracer","Input (X or Y) number value to trace:",value=0,min=0,max=1000), 
+      sliderInput("numeric","How many random numbers to be plotted?",value=500,min=1,max=1000,step=1),
+      sliderInput("sliderX", "Pick minimum and maximum values for X", min=-1000, max=1000, value=c(-1000,1000)),
+      sliderInput("sliderY", "Pick minimum and maximum values for Y", min=-1000, max=1000, value=c(-1000,1000)),
+      checkboxInput("replacement",paste(strwrap("With Replacement",width=17),"... No replacement could quickly (>2001) lead to an error!",collapse="\n"), value=T),
+      checkboxInput("show_xlab","Show / hide x axis label", value=T),
+      checkboxInput("Show_ylab","Show / hide y axis label", value=T),
+      checkboxInput("show_title","Show / hide title", value=T),
+      sliderInput("bins","Number of bins:",min=1,max=100,value=50)
+      ),
+    
+    # Show a plot of the generated distribution
+    mainPanel(
+      tabsetPanel(type="tabs",
+                  tabPanel("Random Number Chart",br(),plotOutput("plot1"),p(strong('Green'),'circles are even values. ', strong('Blue'),'circles are odd values. ','The',strong('asterisk'),'is the number tracer.'),p("Increase/decrease input value and see if shows up as the tracer. Random values are from 1 to 1000, pick any one and move the slider back and forth. Minimum and maximum values for X and Y will shrink the window in which data is displayed. Undesecting Replacement will reduce the data values plotted and may cause errors on the chart. Select Bins value, only affects Distribution Charts, to increase/decrease the number of horizontal slices for data visualization.")),
+                  tabPanel("Distribution Charts",br(),plotOutput("plot2"),p('This is another way to', strong('visualize'), 'the generated random data. It appears evenly distributed.','The',strong('asterisk'),'is the number tracer. Top chart is for X-data and bottom chart is for Y-data.'))
+                  )
+    )
+  )
+))
+```

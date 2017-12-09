@@ -1,0 +1,12 @@
+name: RandomNumberFun
+title: RandomNumberFun
+username:
+account: geeagui
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 246406
+bundleId: 1123973
+url: https://geeagui.shinyapps.io/RandomNumberFun/
+when: 1512771008.21539
+asMultiple: FALSE
+asStatic: FALSE
